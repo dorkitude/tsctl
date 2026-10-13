@@ -1,0 +1,46 @@
+version: 2
+
+project_name: tsctl
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: tsctl
+    binary: tsctl
+    main: .
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w -X main.version={{.Version}}
+    goos:
+      - darwin
+      - linux
+      - windows
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - id: default
+    ids:
+      - tsctl
+    formats:
+      - tar.gz
+    format_overrides:
+      - goos: windows
+        formats:
+          - zip
+    files:
+      - LICENSE
+      - README.md
+
+checksum:
+  name_template: checksums.txt
+
+release:
+  name_template: "tsctl {{ .Tag }}"
+
+changelog:
+  disable: true
