@@ -10,9 +10,13 @@ The `tailscale` CLI controls **the machine it runs on**. tsctl does what the
 
 ```bash
 brew install dorkitude/tap/tsctl
+# or, on Windows
+scoop bucket add dorkitude https://github.com/dorkitude/scoop-bucket && scoop install dorkitude/tsctl
 # or
 go install github.com/dorkitude/tsctl@latest
 ```
+
+This installs the release's prebuilt, signed and notarized binary (one universal binary on macOS), so it needs neither Go nor the Xcode Command Line Tools. If you installed tsctl from the tap when it was a formula built from source, switch once: `brew uninstall tsctl && brew install dorkitude/tap/tsctl`.
 
 ## 🔑 Credentials
 
@@ -84,9 +88,10 @@ go test ./...      # fake Tailscale API; no network or credentials
 go build -o tsctl .
 ```
 
-Releases: push a `vX.Y.Z` tag. GitHub Actions runs the tests and GoReleaser
-attaches binaries. Then update `Formula/tsctl.rb` in `dorkitude/homebrew-tap`
-(new tag URL and sha256).
+Releases: push a `vX.Y.Z` tag. GitHub Actions runs the tests, and GoReleaser
+attaches binaries (macOS ones signed and notarized). Then run
+`scripts/publish-packages.sh vX.Y.Z` to update the Homebrew cask and the Scoop
+manifest (`DRY_RUN=1` to preview).
 
 ## License
 

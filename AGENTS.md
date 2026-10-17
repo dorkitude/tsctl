@@ -11,5 +11,7 @@ Guidance for coding agents working on tsctl.
   in `client_test.go`, and an example in the README.
 - Before committing: `gofmt -l .` (empty), `go vet ./...`, `go test ./...`.
 - Release: bump nothing in code (GoReleaser sets the version from the tag), push a
-  `vX.Y.Z` tag, then update `Formula/tsctl.rb` in `dorkitude/homebrew-tap` with the
-  tag tarball's URL and sha256.
+  `vX.Y.Z` tag, wait for the release workflow (it signs and notarizes the macOS
+  binaries with the `MACOS_*` repo secrets), then run `scripts/publish-packages.sh vX.Y.Z`
+  to update `Casks/tsctl.rb` in `dorkitude/homebrew-tap` and `tsctl.json` in
+  `dorkitude/scoop-bucket`.
